@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I am Sorry! 🥺</title>
+    <!-- Tailwind CSS for modern and beautiful styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti for celebration effect -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .cute-font {
+            font-family: 'Fredoka', sans-serif;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        .heart-particle {
+            position: absolute;
+            bottom: 0;
+            pointer-events: none;
+            animation: floatUp 4s linear forwards;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-tr from-pink-100 via-red-50 to-rose-200 min-h-screen flex flex-col items-center justify-between p-4 overflow-x-hidden relative">
+
+    <div id="hearts-container" class="absolute inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+    <main class="w-full max-w-md bg-white/80 backdrop-blur-md rounded-3xl shadow-xl border border-pink-100 p-6 md:p-8 text-center my-auto z-10 transition-all duration-500 transform hover:scale-[1.01]">
+        
+        <div class="mb-6 flex justify-center">
+            <div class="relative">
+                <div class="absolute inset-0 bg-pink-300 rounded-full blur-xl opacity-40 animate-pulse"></div>
+                <div id="emoji-display" class="text-7xl md:text-8xl relative animate-bounce duration-1000">🥺</div>
+            </div>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-rose-600 cute-font mb-3">
+            Hey! Please Maan Jao Na... 🌸
+        </h1>
+        
+        <p class="text-gray-600 text-sm md:text-base mb-6 leading-relaxed">
+            Mujhse galti ho gayi, I'm really very sorry! Maine jaanbujhkar nahi kiya tha. Tumhari smile sabse pyaari hai, use aise gusse me mat chhupao. ❤️
+        </p>
+
+        <div id="interactive-area" class="space-y-6">
+            
+            <div id="question-box" class="bg-rose-50/50 rounded-2xl p-4 border border-rose-100">
+                <p class="text-rose-700 font-semibold mb-4 text-base md:text-lg">
+                    Kya tumne mujhe maaf kiya? 👇
+                </p>
+                
+                <div class="flex items-center justify-center gap-4 min-h-[60px] relative" id="button-wrapper">
+                    <button id="btn-yes" class="bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-500 hover:to-green-600 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform active:scale-95 text-base md:text-lg z-20">
+                        Haan, Maaf Kiya! 🥰
+                    </button>
+                    
+                    <button id="btn-no" class="bg-gradient-to-r from-rose-400 to-red-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 text-base md:text-lg z-20 absolute md:static">
+                        Bilkul Nahi! 😤
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-t border-pink-100 pt-6">
+                <p class="text-xs text-gray-500 font-semibold tracking-wider uppercase mb-3">
+                    Tumhare Gusse ko thanda karne ke liye Chote Gifts:
+                </p>
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="revealGift('teddy')" class="gift-card bg-pink-50 hover:bg-pink-100 border border-pink-100 rounded-2xl p-3 flex flex-col items-center justify-center transition-all duration-300 active:scale-95 group">
+                        <span class="text-3xl mb-1 group-hover:scale-110 transition-transform">🧸</span>
+                        <span class="text-[10px] font-bold text-rose-500">Soft Hug</span>
+                    </button>
+                    <button onclick="revealGift('chocolate')" class="gift-card bg-pink-50 hover:bg-pink-100 border border-pink-100 rounded-2xl p-3 flex flex-col items-center justify-center transition-all duration-300 active:scale-95 group">
+                        <span class="text-3xl mb-1 group-hover:scale-110 transition-transform">🍫</span>
+                        <span class="text-[10px] font-bold text-rose-500">Chocolates</span>
+                    </button>
+                    <button onclick="revealGift('flowers')" class="gift-card bg-pink-50 hover:bg-pink-100 border border-pink-100 rounded-2xl p-3 flex flex-col items-center justify-center transition-all duration-300 active:scale-95 group">
+                        <span class="text-3xl mb-1 group-hover:scale-110 transition-transform">💐</span>
+                        <span class="text-[10px] font-bold text-rose-500">Flowers</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <div id="gift-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-3xl max-w-xs w-full p-6 text-center shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content">
+            <div id="modal-emoji" class="text-6xl mb-4">🎁</div>
+            <h3 id="modal-title" class="text-xl font-bold text-rose-600 cute-font mb-2">Surprise!</h3>
+            <p id="modal-desc" class="text-gray-600 text-sm mb-6">Sweet message.</p>
+            <button onclick="closeModal()" class="bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600 text-white font-bold py-2 px-6 rounded-full w-full shadow-md transition-all">
+                Hehe, Cute! 😊
+            </button>
+        </div>
+    </div>
+
+    <footer class="mt-4 text-center z-10">
+        <p class="text-xs text-rose-400 font-medium">Bade bade deshon mein aisi choti baatein hoti rehti hain... 🥺👉👈</p>
+    </footer>
+
+    <script>
+        const btnNo = document.getElementById('btn-no');
+        const btnYes = document.getElementById('btn-yes');
+        const emojiDisplay = document.getElementById('emoji-display');
+        const questionBox = document.getElementById('question-box');
+        const heartsContainer = document.getElementById('hearts-container');
+        const giftModal = document.getElementById('gift-modal');
+        const modalContent = document.getElementById('modal-content');
+
+        const giftsData = {
+            teddy: {
+                emoji: '🧸',
+                title: 'Virtual Teddy Hug!',
+                desc: 'Ye pyaara sa teddy tumhari taraf se gusse ko absorb karne ke liye hai. Jb tk mai real hug na de doon, tab tak isse kaam chala lo! 🤗'
+            },
+            chocolate: {
+                emoji: '🍫',
+                title: 'Sweet Treats!',
+                desc: 'Kuch meetha ho jaye? Gusse me dimaag garam hota hai, chocolate khao aur use chill karo! Next time milne par real wali pakka! 😋'
+            },
+            flowers: {
+                emoji: '💐',
+                title: 'Beautiful Flowers!',
+                desc: 'A beautiful bouquet for my most beautiful and special friend. Please ab thoda sa muskura do na! 🌸'
+            }
+        };
+
+        function flyAway() {
+            const maxX = window.innerWidth - btnNo.offsetWidth - 40;
+            const maxY = window.innerHeight - btnNo.offsetHeight - 40;
+            
+            const randomX = Math.random() * (maxX - 20) + 10;
+            const randomY = Math.random() * (maxY - 100) + 50;
+            
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = `${randomX}px`;
+            btnNo.style.top = `${randomY}px`;
+            
+            emojiDisplay.innerText = '😜';
+            setTimeout(() => {
+                if (emojiDisplay.innerText === '😜') {
+                    emojiDisplay.innerText = '🥺';
+                }
+            }, 1000);
+        }
+
+        btnNo.addEventListener('mouseenter', flyAway);
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            flyAway();
+        });
+
+        btnYes.addEventListener('click', () => {
+            btnNo.style.position = 'static';
+            btnNo.style.display = 'none';
+            
+            emojiDisplay.innerText = '✨🥳✨';
+            emojiDisplay.classList.remove('animate-bounce');
+            emojiDisplay.classList.add('scale-125');
+            
+            questionBox.innerHTML = `
+                <div class="text-center p-2">
+                    <p class="text-2xl font-bold text-emerald-600 cute-font mb-2">Yayyy! Maaf Kar Diya! 🎉</p>
+                    <p class="text-gray-600 text-sm">Thank you so much! Ab tumhare chehre par ek pyari si smile hai na? Mujhe pata tha tum maan jaogi! Bestie ho meri! 💖</p>
+                </div>
+            `;
+            
+            triggerConfetti();
+            startHeartsRain();
+        });
+
+        function triggerConfetti() {
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 40 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        function startHeartsRain() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-particle');
+                
+                const heartIcons = ['❤️', '💖', '🥰', '🌸', '✨', '💝'];
+                heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                
+                const size = Math.random() * (30 - 15) + 15;
+                heart.style.fontSize = `${size}px`;
+                heart.style.left = `${Math.random() * 100}vw`;
+                
+                const duration = Math.random() * (5 - 3) + 3;
+                heart.style.animationDuration = `${duration}s`;
+                
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, duration * 1000);
+            }, 150);
+        }
+
+        function revealGift(type) {
+            const data = giftsData[type];
+            document.getElementById('modal-emoji').innerText = data.emoji;
+            document.getElementById('modal-title').innerText = data.title;
+            document.getElementById('modal-desc').innerText = data.desc;
+            
+            giftModal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+
+            confetti({
+                particleCount: 40,
+                spread: 60,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function closeModal() {
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                giftModal.classList.add('hidden');
+            }, 200);
+        }
+    </script>
+</body>
+</html>
